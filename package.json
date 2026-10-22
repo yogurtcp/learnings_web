@@ -1,0 +1,12 @@
+{
+  "name": "packet-path",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 4387 --directory dist",
+    "test": "node --test tests/*.test.js"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.12"
+  }
+}
