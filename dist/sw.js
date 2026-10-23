@@ -1,4 +1,4 @@
-const CACHE='learnings-web-be9b0912c945c9fe95c3';
+const CACHE='learnings-web-d140d007d69447b318f1';
 const ASSETS=['./','./index.html','./styles.css','./app.js','./content.js','./engine.js','./install.js','./updates.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'})))).then(()=>self.skipWaiting()));

@@ -40,7 +40,7 @@ The application was renamed from Packet Path / Remember Networks. The existing h
 
 ## Automatic updates
 
-Installed and browser-open apps check for new releases on startup, foreground return, reconnection, and every minute while visible and online. Registration bypasses HTTP caching for the worker; release precaching reloads all app assets before activation. A successful update takes control and reloads the app once. First-time installation does not reload.
+Installed and browser-open apps check for new releases only on startup when online. There is no recurring polling or network update check on foreground return, focus, or reconnection. Foreground return can apply an update already downloaded at startup. Registration bypasses HTTP caching for the worker; release precaching reloads all app assets before activation. A successful update takes control and reloads the app once. First-time installation does not reload.
 
 Reload waits until an input/draft editor loses focus and the app confirms progress can be saved. A storage failure keeps the current session open for backup. Offline checks fail silently and the cached course remains available. Closed or suspended apps are subject to browser/OS scheduling and check again when reopened.
 
