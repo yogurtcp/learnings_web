@@ -28,7 +28,7 @@ export function streak(activity,now=Date.now()){
 }
 export function validateState(value,lessons,questions){
  const valid=value&&typeof value==='object'&&value.schema===1;
- if(!valid)throw new Error('This is not a Packet Path progress backup (version 1).');
+ if(!valid)throw new Error('This is not a learnings_web progress backup (version 1).');
  const out=fresh(), lids=new Set(lessons.map(l=>l.id)),qids=new Set(questions.map(q=>q.id));
  const obj=v=>v&&typeof v==='object'&&!Array.isArray(v);
  const timestamp=v=>Number.isFinite(v)&&v>=0&&v<1e15;

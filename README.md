@@ -1,4 +1,4 @@
-# Remember Networks · Packet Path
+# learnings_web
 
 A blue learning desk modeled on Remember Finance. This independent course teaches internet networking through explanations, worked examples and open-ended recall.
 
@@ -31,3 +31,9 @@ Engine and DOM tests exercise curriculum integrity, scheduling, due filtering, c
 ## Content model
 
 `dist/content.js` contains original teaching text, model answers, answer checklists, definitions and protocol reference links. `dist/engine.js` contains pure scheduling and backup logic. `dist/app.js` implements views and interactions. Packet panels are explicitly authored examples, not live captures or simulations. Protocol references may have later updates and errata listed on their reference pages.
+
+## Installation
+
+Open the public site in a supported browser and click **Install app**. It uses the native installation prompt when available and otherwise explains the browser’s manual flow. iPhone/iPad users can use Safari → Share → Add to Home Screen. A service worker caches the complete course for offline use after online setup. External fonts may fall back to system fonts offline. Installation does not provide cross-device synchronization.
+
+The application was renamed from Packet Path / Remember Networks. The existing hosting URL, repository, browser storage key and backup schema are retained to preserve existing progress and integrations.
