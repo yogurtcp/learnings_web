@@ -1,8 +1,9 @@
-const CACHE='learnings-web-v1';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./content.js','./engine.js','./install.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
+const CACHE='learnings-web-be9b0912c945c9fe95c3';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./content.js','./engine.js','./install.js','./updates.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
- event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
+ event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'})))).then(()=>self.skipWaiting()));
 });
+self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')event.waitUntil(self.skipWaiting());});
 self.addEventListener('activate',event=>{
  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('learnings-web-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
 });
@@ -13,7 +14,7 @@ self.addEventListener('fetch',event=>{
  const assetURL=new URL(request.mode==='navigate'?'./index.html':request.url,self.registration.scope);
  const known=ASSETS.some(path=>new URL(path,self.registration.scope).href===assetURL.href);
  if(!known)return;
- event.respondWith(fetch(request).then(response=>{
+ event.respondWith(fetch(request,{cache:'no-store'}).then(response=>{
   if(response.ok&&!response.redirected){const copy=response.clone();event.waitUntil(caches.open(CACHE).then(cache=>cache.put(assetURL.href,copy)));}
   return response;
  }).catch(async()=>{const cached=await caches.match(assetURL.href);return cached||Response.error();}));

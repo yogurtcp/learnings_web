@@ -79,5 +79,5 @@ function render(){const [page='today',...rest]=(location.hash.slice(1)||'today')
  root.querySelectorAll('[data-action="review"]').forEach(b=>b.onclick=beginReview);bindNetwork();scrollTop();if(page==='lessons'&&id)requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:'start'}));root.focus({preventScroll:true});}
 window.addEventListener('hashchange',render);
 window.addEventListener('storage',ev=>{if(ev.key===KEY)toast('Progress changed in another tab. Reload this tab before continuing.');});
-initializeInstall({notify:toast});
+initializeInstall({notify:toast,beforeReload:save});
 render();

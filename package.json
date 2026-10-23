@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "python3 -m http.server 4387 --directory dist",
-    "test": "node --test tests/*.test.js"
+    "test": "node scripts/prepare-release.mjs && node --test tests/*.test.js",
+    "prepare:release": "node scripts/prepare-release.mjs"
   },
   "devDependencies": {
     "linkedom": "0.18.12"

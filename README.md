@@ -37,3 +37,11 @@ Engine and DOM tests exercise curriculum integrity, scheduling, due filtering, c
 Open the public site in a supported browser and click **Install app**. It uses the native installation prompt when available and otherwise explains the browser’s manual flow. iPhone/iPad users can use Safari → Share → Add to Home Screen. A service worker caches the complete course for offline use after online setup. External fonts may fall back to system fonts offline. Installation does not provide cross-device synchronization.
 
 The application was renamed from Packet Path / Remember Networks. The existing hosting URL, repository, browser storage key and backup schema are retained to preserve existing progress and integrations.
+
+## Automatic updates
+
+Installed and browser-open apps check for new releases on startup, foreground return, reconnection, and every minute while visible and online. Registration bypasses HTTP caching for the worker; release precaching reloads all app assets before activation. A successful update takes control and reloads the app once. First-time installation does not reload.
+
+Reload waits until an input/draft editor loses focus and the app confirms progress can be saved. A storage failure keeps the current session open for backup. Offline checks fail silently and the cached course remains available. Closed or suspended apps are subject to browser/OS scheduling and check again when reopened.
+
+Run `node scripts/prepare-release.mjs` before publication. It fingerprints app files and updates the worker cache identity, so even a content-only change produces a discoverable release. `npm test` runs this automatically.
