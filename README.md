@@ -2,7 +2,7 @@
 
 **[Open learnings_web →](https://packet-path.yogurt-co.chatgpt.site)**
 
-A blue learning desk modeled on Remember Finance. This independent course teaches internet networking through explanations, worked examples and open-ended recall.
+A blue learning desk modeled on Remember Finance. All 24 lessons teach internet networking through concrete worked cases, annotated evidence and open-ended recall. Each starts with a specific exchange or failure and explains the meaning of its fields before relying on terminology.
 
 ## Use
 
@@ -32,7 +32,7 @@ Engine and DOM tests exercise curriculum integrity, scheduling, due filtering, c
 
 ## Content model
 
-`dist/content.js` contains original teaching text, model answers, answer checklists, definitions and protocol reference links. `dist/engine.js` contains pure scheduling and backup logic. `dist/app.js` implements views and interactions. Packet panels are explicitly authored examples, not live captures or simulations. Lesson 1 also includes a real same-origin HTTP request experiment showing the actual returned status, Content-Type and body. That experiment requires a connection and deliberately bypasses the app’s offline cache. Its HTTP/1.1 illustration is labeled separately from observed results. Protocol references may have later updates and errata listed on their reference pages.
+`dist/content.js` assembles the course and glossary. `dist/lesson-one.js` contains the live-request opening. `dist/course-cases.js` contains the 23 rewritten worked cases, model answers and checklists; `dist/course-evidence.js` supplies self-contained question inputs; `dist/curriculum.js` preserves stable identities and protocol references. `dist/engine.js` contains pure scheduling and backup logic. `dist/app.js` implements views and interactions. Packet panels are explicitly authored examples, not live captures or simulations. Lesson 1 also includes a real same-origin HTTP request experiment showing the actual returned status, Content-Type and body. That experiment requires a connection and deliberately bypasses the app’s offline cache. Its HTTP/1.1 illustration is labeled separately from observed results. Protocol references may have later updates and errata listed on their reference pages.
 
 ## Installation
 
@@ -49,3 +49,11 @@ Reload waits until an input/draft editor loses focus and the app confirms progre
 Run `node scripts/prepare-release.mjs` before publication. It fingerprints app files and updates the worker cache identity, so even a content-only change produces a discoverable release. `npm test` runs this automatically.
 
 The opening lesson is written around fetching a concrete resource, reading the returned message, following explicit addressing fields, and interpreting failures. Rich example panels and a full-explanation route (`#reading/layers`) make the teaching available without changing a learner’s saved question session.
+
+## Worked-case coverage
+
+The whole course uses the concrete-case format, not only lesson 1. Cases include an empty switch forwarding table, a /26 subnet boundary, gateway resolution, a lease with an unresponsive resolver, longest-prefix routing, two translated clients, IPv6 advertisements, TCP sequence state and a missing byte range, stale UDP updates, DNS cache expiry, conflicting lookup errors, certificate-name mismatch, TLS termination, conditional HTTP caching, HTTP multiplexing, sessions and CORS, an edge cache hit, split VPN routes, an incomplete capture, forged trust claims, constrained service resources and a two-attempt diagnostic capstone.
+
+There are 96 reading sections, 72 stable card identifiers and 144 prompt phrasings. Each non-opening question includes authored scenario givens. Definitions remain a reference aid; the lesson body supplies the concrete mechanism and its interpretation. Packet-like evidence is explicitly authored. The live HTTP experiment is separately labeled and needs connectivity.
+
+Completions, notes, card identifiers and the startup-only update policy are preserved. Reopen the installed app online to pick up the course release.

@@ -1,3 +1,4 @@
+import {lessons} from '../dist/content.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -45,4 +46,24 @@ test('opening lesson shows concrete fields and a real-request control before adv
 });
 test('full explanation can be read without resetting an active question session',async()=>{
  const b=await boot();b.go('#lesson/layers');for(let i=0;i<5;i++)b.click('[data-action="read-next"]');b.click('[data-action="quiz"]');b.go(location.hash);b.click('[data-action="reveal"]');const before=b.map.get(KEY);b.go('#reading/layers');assert.match(document.querySelector('h1').textContent,/Make your browser/);assert.ok(document.querySelector('[data-demo-request]'));assert.equal(b.map.get(KEY),before);b.go('#lesson/layers');assert.ok(document.querySelector('.answer'));assert.equal(b.map.get(KEY),before);
+});
+
+test('every lesson renders its worked evidence and all 72 questions complete without changing identities',async()=>{
+ const b=await boot();
+ for(const lesson of lessons){
+  b.go('#lesson/'+lesson.id);
+  for(let page=0;page<4;page++){
+   assert.ok(document.querySelector('.readingcard .evidence-card'),lesson.id+' section '+page);
+   assert.ok(document.querySelector('.readingcard .field-notes'),lesson.id+' annotated fields');
+   b.click('[data-action="read-next"]');
+  }
+  b.click('[data-action="read-next"]');b.click('[data-action="quiz"]');b.go(location.hash);
+  for(let i=0;i<3;i++){
+   assert.equal(document.querySelector('.answer'),null,lesson.id+' answer hidden');
+   if(lesson.id!=='layers')assert.ok(document.querySelector('.scenario-givens'),lesson.id+' self-contained inputs');
+   b.click('[data-action="reveal"]');assert.equal(document.querySelectorAll('.checklist li').length,3);b.click('[data-grade="good"]');
+  }
+  assert.match(document.querySelector('main').textContent,/One more piece connected/);
+ }
+ const saved=JSON.parse(b.map.get(KEY));assert.equal(Object.keys(saved.completed).length,24);assert.equal(Object.keys(saved.cards).length,72);assert.equal(saved.activity.length,72);
 });

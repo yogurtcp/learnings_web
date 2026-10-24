@@ -1,5 +1,5 @@
-const CACHE='learnings-web-e7aaaf78f7d2dd61d792';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./content.js','./lesson-one.js','./live-demo.js','./engine.js','./install.js','./updates.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
+const CACHE='learnings-web-2eaf6136ab9ffb95ec9d';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./content.js','./curriculum.js','./course-cases.js','./course-evidence.js','./lesson-one.js','./live-demo.js','./engine.js','./install.js','./updates.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'})))).then(()=>self.skipWaiting()));
 });
