@@ -1,5 +1,7 @@
 # learnings_web
 
+**[Open learnings_web →](https://packet-path.yogurt-co.chatgpt.site)**
+
 A blue learning desk modeled on Remember Finance. This independent course teaches internet networking through explanations, worked examples and open-ended recall.
 
 ## Use
