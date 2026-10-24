@@ -15,7 +15,7 @@ async function boot(initial){
  return {window,map,go,click,text:()=>document.querySelector('main').textContent};
 }
 test('complete lesson, hidden answers, draft persistence, rating, next lesson and reload',async()=>{
- const b=await boot();assert.match(b.text(),/Make sense/);b.go('#lesson/layers');assert.match(b.text(),/Start with a message/);
+ const b=await boot();assert.match(b.text(),/Make sense/);b.go('#lesson/layers');assert.match(b.text(),/Ask this web server for one tiny file/);
  for(let i=0;i<5;i++)b.click('[data-action="read-next"]');b.click('[data-action="quiz"]');b.go(location.hash);
  assert.equal(document.querySelector('.answer'),null);assert.equal(document.querySelector('[data-grade]'),null);
  const draft=document.querySelector('#draft');draft.value='The IP destination is the server, the frame goes to the gateway.';draft.dispatchEvent(new b.window.Event('input'));
@@ -31,11 +31,18 @@ test('reference search, network inspection and settings backup preview',async()=
  const b=await boot();b.go('#reference');const input=document.querySelector('#search');input.value='SLAAC';input.dispatchEvent(new b.window.Event('input'));assert.match(document.querySelector('#results').textContent,/Stateless Address Autoconfiguration/);b.click('[data-tab="network"]');assert.match(b.text(),/192.168.1.10/);const select=document.querySelector('#hop');select.value='1';select.dispatchEvent(new b.window.Event('change'));assert.match(document.querySelector('#hop-detail').textContent,/203.0.113.5/);b.go('#settings');b.click('#reset');assert.equal(document.querySelector('dialog').open,true);b.click('#cancel');assert.equal(document.querySelector('dialog').open,false);
 });
 test('answer and notes escape HTML and saved sessions preserve ungraded drafts',async()=>{
- const s=fresh();s.notes.layers='<img src=x onerror=alert(1)>';const b=await boot(s);b.go('#lesson/layers');assert.equal(document.querySelectorAll('img').length,0);assert.match(document.querySelector('#lesson-notes').value,/img src=x/);b.click('[data-action="read-next"]');b.go('#today');b.go('#lesson/layers');assert.match(b.text(),/One envelope inside another/);
+ const s=fresh();s.notes.layers='<img src=x onerror=alert(1)>';const b=await boot(s);b.go('#lesson/layers');assert.equal(document.querySelectorAll('img').length,0);assert.match(document.querySelector('#lesson-notes').value,/img src=x/);b.click('[data-action="read-next"]');b.go('#today');b.go('#lesson/layers');assert.match(b.text(),/Why “GET this file” is not enough to deliver it/);
 });
 test('backup restore previews validated data and replaces state only on confirmation',async()=>{
  const b=await boot();b.go('#settings');const imported=fresh();imported.completed.layers=Date.now();const input=document.querySelector('#import-file');Object.defineProperty(input,'files',{value:[{size:100,text:async()=>JSON.stringify(imported)}],configurable:true});await input.onchange({target:input});assert.equal(document.querySelector('dialog').open,true);assert.match(document.querySelector('#confirm-body').textContent,/1 completed lessons/);assert.equal(b.map.get(KEY),undefined);b.click('#confirm');assert.ok(JSON.parse(b.map.get(KEY)).completed.layers);
 });
 test('storage quota errors remain visible and do not claim durable saving',async()=>{
  const b=await boot();globalThis.localStorage.setItem=()=>{throw new Error('Quota');};b.go('#lesson/layers');b.click('[data-action="read-next"]');assert.match(b.text(),/could not save progress/);assert.ok(document.querySelector('[role="alert"]'));
+});
+
+test('opening lesson shows concrete fields and a real-request control before advancing',async()=>{
+ const b=await boot();b.go('#lesson/layers');const card=document.querySelector('.readingcard');assert.match(card.textContent,/GET \/lesson-demo.txt HTTP\/1.1/);assert.match(card.textContent,/Which resource on this website/);assert.ok(card.querySelector('[data-demo-request]'));assert.equal(card.querySelector('details'),null);assert.ok(card.querySelectorAll('.reading-section>p').length>=4);
+});
+test('full explanation can be read without resetting an active question session',async()=>{
+ const b=await boot();b.go('#lesson/layers');for(let i=0;i<5;i++)b.click('[data-action="read-next"]');b.click('[data-action="quiz"]');b.go(location.hash);b.click('[data-action="reveal"]');const before=b.map.get(KEY);b.go('#reading/layers');assert.match(document.querySelector('h1').textContent,/Make your browser/);assert.ok(document.querySelector('[data-demo-request]'));assert.equal(b.map.get(KEY),before);b.go('#lesson/layers');assert.ok(document.querySelector('.answer'));assert.equal(b.map.get(KEY),before);
 });

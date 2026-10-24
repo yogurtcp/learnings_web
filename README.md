@@ -32,7 +32,7 @@ Engine and DOM tests exercise curriculum integrity, scheduling, due filtering, c
 
 ## Content model
 
-`dist/content.js` contains original teaching text, model answers, answer checklists, definitions and protocol reference links. `dist/engine.js` contains pure scheduling and backup logic. `dist/app.js` implements views and interactions. Packet panels are explicitly authored examples, not live captures or simulations. Protocol references may have later updates and errata listed on their reference pages.
+`dist/content.js` contains original teaching text, model answers, answer checklists, definitions and protocol reference links. `dist/engine.js` contains pure scheduling and backup logic. `dist/app.js` implements views and interactions. Packet panels are explicitly authored examples, not live captures or simulations. Lesson 1 also includes a real same-origin HTTP request experiment showing the actual returned status, Content-Type and body. That experiment requires a connection and deliberately bypasses the app’s offline cache. Its HTTP/1.1 illustration is labeled separately from observed results. Protocol references may have later updates and errata listed on their reference pages.
 
 ## Installation
 
@@ -47,3 +47,5 @@ Installed and browser-open apps check for new releases only on startup when onli
 Reload waits until an input/draft editor loses focus and the app confirms progress can be saved. A storage failure keeps the current session open for backup. Offline checks fail silently and the cached course remains available. Closed or suspended apps are subject to browser/OS scheduling and check again when reopened.
 
 Run `node scripts/prepare-release.mjs` before publication. It fingerprints app files and updates the worker cache identity, so even a content-only change produces a discoverable release. `npm test` runs this automatically.
+
+The opening lesson is written around fetching a concrete resource, reading the returned message, following explicit addressing fields, and interpreting failures. Rich example panels and a full-explanation route (`#reading/layers`) make the teaching available without changing a learner’s saved question session.
